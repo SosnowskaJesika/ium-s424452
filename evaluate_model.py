@@ -4,19 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 import tensorflow as tf
 
-# Wczytanie danych
-df = pd.read_csv('anime_test.csv')
-df = df.replace('Unknown', -1)
-df = df.drop(['anime_id'], axis=1)
-df['genre'] = df['genre'].fillna('')
-df['type'] = df['type'].fillna('')
-df['rating'] = df['rating'].fillna(0)
-df['members'] = df['members'].fillna(0)
-encoder = LabelEncoder()
-df['name'] = encoder.fit_transform(df['name'])
-df['genre'] = encoder.fit_transform(df['genre'])
-df['type'] = encoder.fit_transform(df['type'])
-df = df.astype('float32')
+df = pd.read_csv('prepared_data.csv')
 
 # Podział na cechy i etykiety
 X = df.drop(['rating'], axis=1)
