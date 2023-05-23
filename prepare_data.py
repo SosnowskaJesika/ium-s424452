@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 
-df = pd.read_csv('data/anime.csv')
+df = pd.read_csv('/data/anime.csv')
 df = df.replace('Unknown', -1)
 df = df.drop(['anime_id'], axis=1)
 df['genre'] = df['genre'].fillna('')
@@ -13,4 +13,4 @@ df['name'] = encoder.fit_transform(df['name'])
 df['genre'] = encoder.fit_transform(df['genre'])
 df['type'] = encoder.fit_transform(df['type'])
 df = df.astype('float32')
-df.to_csv('data/prepared_data.csv', index=False)
+df.to_csv('/data/prepared_data.csv', index=False)
