@@ -15,11 +15,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-
       - name: Prepare data
         run: python prepare_data.py
 
@@ -30,11 +25,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
 
       - name: Train model
         run: python train_model.py
@@ -51,6 +41,8 @@ jobs:
         run: |
           mkdir -p artifacts
           cp model.h5 artifacts/
-        artifacts:
-          paths:
-            - artifacts/model.h5
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: trained-model
+          path: artifacts/model.h5
