@@ -1,36 +1,56 @@
-name: Train Model
+name: Train and Archive Model
 
 on:
   workflow_dispatch:
     inputs:
       train:
-        description: "Perform model training"
+        description: "Train the model"
         required: true
 
 jobs:
-  train:
+  prepare_data:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Prepare Data
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Prepare data
         run: python prepare_data.py
 
-      - name: Train Model
-        run: python train_model.py --dataset ${{ github.event.inputs.train }}
+  train:
+    needs: prepare_data
+    runs-on: ubuntu-latest
 
-      - name: Evaluate Model
-        run: python evaluate_model.py
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-  archive_model:
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Train model
+        run: python train_model.py
+
+  archive:
     needs: train
     runs-on: ubuntu-latest
 
     steps:
-      - name: Archive Model
-        uses: actions/upload-artifact@v2
-        with:
-          name: trained-model
-          path: model.h5
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Archive model file
+        run: |
+          mkdir -p artifacts
+          cp model.h5 artifacts/
+        artifacts:
+          paths:
+            - artifacts/model.h5
