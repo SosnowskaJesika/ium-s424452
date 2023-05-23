@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 
-df = pd.read_csv('anime.csv')
+df = pd.read_csv('./anime.csv')
 df = df.replace('Unknown', -1)
 df = df.drop(['anime_id'], axis=1)
 df['genre'] = df['genre'].fillna('')
