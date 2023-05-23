@@ -1,0 +1,68 @@
+name: Train and Evaluate Model
+
+on:
+  workflow_dispatch:
+    inputs:
+      train:
+        description: "Train the model"
+        required: true
+
+jobs:
+  train:
+    name: Train Model
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install tensorflow scikit-learn sacred pandas
+
+      - name: Train Model
+        run: |
+          python model.py
+
+  evaluate:
+    name: Evaluate Model
+    needs: train
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install tensorflow scikit-learn sacred pandas
+
+      - name: Evaluate Model
+        run: |
+          python model.py
+
+  archive:
+    name: Archive Model
+    needs: evaluate
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Archive Model
+        uses: actions/upload-artifact@v2
+        with:
+          name: model
+          path: anime_model.h5
