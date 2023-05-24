@@ -22,3 +22,4 @@ y_pred_classes = np.argmax(y_pred, axis=1)
 accuracy = accuracy_score(y, y_pred_classes)
 
 print(f'Accuracy: {accuracy}')
+print(f'Mean Absolute Error: {mae}')
