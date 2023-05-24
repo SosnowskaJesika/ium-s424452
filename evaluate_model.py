@@ -11,6 +11,10 @@ df = pd.read_csv('prepared_data.csv')
 X = df.drop(['rating'], axis=1)
 y = df['rating']
 
+# Konwersja etykiet na klasy
+encoder = LabelEncoder()
+y = encoder.fit_transform(y)
+
 # Wczytanie wytrenowanego modelu
 model = tf.keras.models.load_model('model.h5')
 
