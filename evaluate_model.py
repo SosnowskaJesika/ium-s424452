@@ -17,10 +17,8 @@ model = tf.keras.models.load_model('model.h5')
 
 # Ewaluacja modelu
 y_pred = model.predict(X)
-y_pred_classes = np.where(y_pred >= 0.5, 1, 0)
+y_pred_classes = np.where(y_pred, axis=1)
 
 accuracy = accuracy_score(y, y_pred_classes)
-mae = mean_absolute_error(y, y_pred_classes)
 
 print(f'Accuracy: {accuracy}')
-print(f'Mean Absolute Error: {mae}')
